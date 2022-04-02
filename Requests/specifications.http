@@ -1,0 +1,16 @@
+@hostname = http://localhost:3333
+
+
+POST {{hostname}}/specifications
+content-type: application/json
+username: marcelo.mac
+
+{
+	"name": "Câmbio automático 1",
+  "description": "Carro com câmbio automático"
+}
+
+###
+
+GET {{hostname}}/specifications
+

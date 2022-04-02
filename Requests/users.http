@@ -1,0 +1,52 @@
+@hostname = http://localhost:3333
+@route = users
+
+###
+
+POST {{hostname}}/users
+content-type: application/json
+username: marcelo.mac
+
+{
+	"name": "Marcelo2",
+  "username": "marcelomac",
+  "password": "senha",
+  "email": "marcelo@gmail.com",
+  "driver_license": "123456789-0"
+}
+
+###
+
+GET {{hostname}}/{{route}}
+
+
+### POST .CSV:
+
+POST {{hostname}}/{{route}}/import
+Content-Type: multipart/form-data; boundary=mybondary123
+
+title
+--mybondary123
+Content-Disposition: form-data; name="file"; filename="categories.csv"
+Content-Type: text/csv
+
+< ../assets/categories.csv
+--mybondary123--
+
+
+### POST IMAGENS:
+
+POST {{hostname}}/categories/import
+//POST https://api.example.com/user/upload
+Content-Type: multipart/form-data; boundary=mybondary123
+
+# ----mybondary123
+# Content-Disposition: form-data; name="file"
+
+title
+--mybondary123
+Content-Disposition: form-data; name="file"; filename="1.png"
+Content-Type: image/jpeg
+
+< D:/Imagens/cars.jpg
+--mybondary123--

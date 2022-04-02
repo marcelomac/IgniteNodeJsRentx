@@ -1,0 +1,48 @@
+@hostname = http://localhost:3333
+
+###
+
+POST {{hostname}}/categories
+content-type: application/json
+username: marcelo.mac
+
+{
+	"name": "Sedan 7",
+  "description": "utility car"
+}
+
+###
+
+GET {{hostname}}/categories
+
+
+### POST .CSV:
+
+POST {{hostname}}/categories/import
+Content-Type: multipart/form-data; boundary=mybondary123
+
+title
+--mybondary123
+Content-Disposition: form-data; name="file"; filename="categories.csv"
+Content-Type: text/csv
+
+< ../assets/categories.csv
+--mybondary123--
+
+
+### POST IMAGENS:
+
+POST {{hostname}}/categories/import
+//POST https://api.example.com/user/upload
+Content-Type: multipart/form-data; boundary=mybondary123
+
+# ----mybondary123
+# Content-Disposition: form-data; name="file"
+
+title
+--mybondary123
+Content-Disposition: form-data; name="file"; filename="1.png"
+Content-Type: image/jpeg
+
+< D:/Imagens/cars.jpg
+--mybondary123--
