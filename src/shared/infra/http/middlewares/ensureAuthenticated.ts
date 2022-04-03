@@ -2,6 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import { UsersRepository } from '@modules/accounts/infra/typeorm/repositories/UsersRepository';
 import { AppError } from '@shared/errors/AppErrors';
+import { UsersTokensRepository } from '@modules/accounts/infra/typeorm/repositories/UsersTokensRepository';
+import auth from '@config/auth';
+
+/**
+ * AULAS:
+ *
+ * upd: https://app.rocketseat.com.br/node/chapter-v-2/group/autenticacao-2/lesson/controller-refresh-token
+ */
 
 /**
  * interface para forçar a função verify() retornar um tipo (IPayload) que
@@ -18,6 +26,7 @@ async function ensureAuthenticated(
   next: NextFunction
 ) {
   const authHeader = request.headers.authorization;
+  const usersTokensRepository = new UsersTokensRepository();
 
   if (!authHeader) {
     throw new AppError('Token missing', 401);
@@ -35,21 +44,23 @@ async function ensureAuthenticated(
           sub: '29a32bee-ec44-4eb0-bc21-1c7270215765'
         }
      */
+    console.log(token);
+    console.log(auth.secret_refresh_token);
 
     const { sub: user_id } = verify(
       token,
-      'bb696c815a194f0893ba177f8df45c1d'  // hash aleatório gerado no site MD5
+      auth.secret_refresh_token
     ) as IPayload;
 
-    const usersRepository = new UsersRepository();
-
-    const user = await usersRepository.findById(user_id);
+    const user = await usersTokensRepository.findByUserIdAndRefreshToken(
+      user_id,
+      token
+    );
 
     if (!user) {
       throw new AppError('User does not exists!', 401);
     }
 
-    
     /**
      * SECTION
      * ANCHOR Request recebe user_id
