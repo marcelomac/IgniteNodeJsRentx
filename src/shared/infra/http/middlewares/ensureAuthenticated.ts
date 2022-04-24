@@ -43,9 +43,9 @@ async function ensureAuthenticated(
           exp: 1636120537,
           sub: '29a32bee-ec44-4eb0-bc21-1c7270215765'
         }
-     */
-    console.log(token);
-    console.log(auth.secret_refresh_token);
+        console.log(token);
+        console.log(auth.secret_refresh_token);
+      */
 
     const { sub: user_id } = verify(
       token,

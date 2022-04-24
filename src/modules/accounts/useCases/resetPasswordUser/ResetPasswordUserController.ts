@@ -9,9 +9,6 @@ class ResetPasswordUserController {
     const { token } = request.query;
     const { password } = request.body;
 
-    console.log('query:');
-    console.log(request.query);
-
     const resetPasswordUserUseCase = container.resolve(
       ResetPasswordUserUseCase
     );
