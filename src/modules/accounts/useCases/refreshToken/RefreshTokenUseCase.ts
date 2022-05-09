@@ -7,11 +7,22 @@ import { IDateProvider } from '@shared/container/providers/DateProvider/IDatePro
 
 /*
 AULA https://app.rocketseat.com.br/node/chapter-v-2/group/autenticacao-2/lesson/criando-caso-de-uso-do-refresh-token
+     https://app.rocketseat.com.br/node/chapter-vi-2/group/refresh-token/lesson/corrigindo-o-refresh-token
+
+
+     Situação ideal: Utilizar o token para fazer as requisições e quando esse expirar, usar o refresh_token
+     para gerar um novo token.
+
 */
 
 interface IPayload {
   sub: string;
   email: string;
+}
+
+interface ITokenResponse {
+  token: string;
+  refresh_token: string;
 }
 
 @injectable()
@@ -23,7 +34,7 @@ class RefreshTokenUseCase {
     private dayJsDateProvider: IDateProvider
   ) {}
 
-  async execute(token: string): Promise<string> {
+  async execute(token: string): Promise<ITokenResponse> {
     const { email, sub } = verify(token, auth.secret_refresh_token) as IPayload;
     const user_id = sub;
 
@@ -55,7 +66,15 @@ class RefreshTokenUseCase {
       user_id: user_id,
     });
 
-    return refresh_token;
+    const newToken = sign({}, auth.secret_token, {
+      subject: user_id,
+      expiresIn: auth.expires_in_token,
+    });
+
+    return {
+      refresh_token,
+      token: newToken,
+    };
   }
 }
 

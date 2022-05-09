@@ -2,19 +2,19 @@ import crypto from 'crypto';
 import multer from 'multer';
 import { resolve } from 'path';
 
-export default {
-  upload(folder: string) {
-    return {
-      // ANCHOR diskStorage: permite armazenar em disco e renomear arquivo.
-      storage: multer.diskStorage({
-        destination: resolve(__dirname, '..', '..', folder),
-        filename: (request, file, callback) => {
-          const fileHash = crypto.randomBytes(16).toString('hex');
-          const fileName = `${fileHash}-${file.originalname}`;
+const tmpFolder = resolve(__dirname, '..', '..', 'tmp');
 
-          return callback(null, fileName);
-        },
-      }),
-    };
-  },
+// exporta um objeto com as options do multer:
+export default {
+  tmpFolder,
+
+  storage: multer.diskStorage({
+    destination: tmpFolder,
+    filename: (request, file, callback) => {
+      const fileHash = crypto.randomBytes(16).toString('hex');
+      const fileName = `${fileHash}-${file.originalname}`;
+
+      return callback(null, fileName);
+    },
+  }),
 };
