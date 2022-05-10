@@ -5,7 +5,8 @@ import { IStorageProvider } from '../IStorageProvider';
 
 class LocalStorageProvider implements IStorageProvider {
   async save(file: string, folder: string): Promise<string> {
-
+    
+    console.log('entrou ??');
     // fs.promises.rename(oldPath, newPath)
     // remove da primeira pasta (oldPath) e move para a segunda (newPath):
     await fs.promises.rename(
@@ -16,7 +17,7 @@ class LocalStorageProvider implements IStorageProvider {
     return file;
   }
   async delete(file: string, folder: string): Promise<void> {
-    const filename = resolve(`${upload.tmpFolder}/${folder}`, file)
+    const filename = resolve(`${upload.tmpFolder}/${folder}`, file);
 
     // ANCHOR 'stat' verifica se um arquivo existe:
     try {
@@ -24,7 +25,7 @@ class LocalStorageProvider implements IStorageProvider {
     } catch {
       return;
     }
-  
+
     // ANCHOR 'unlink' exclui o arquivo:
     await fs.promises.unlink(filename);
   }
