@@ -44,9 +44,6 @@ class S3StorageProvider implements IStorageProvider {
 
   async delete(file: string, folder: string): Promise<void> {
     // removendo do S3:
-
-    //    console.log(`deleteObject: ${process.env.AWS_BUCKET}/${folder}/${file}`);
-
     await this.client
       .deleteObject({
         Bucket: `${process.env.AWS_BUCKET}/${folder}`,
