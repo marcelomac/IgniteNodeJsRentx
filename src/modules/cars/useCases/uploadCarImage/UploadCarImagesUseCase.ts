@@ -1,8 +1,9 @@
+import { inject, injectable } from 'tsyringe';
 import { ICarsImagesRepository } from '@modules/cars/repositories/ICarsImagesRepository';
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 import { AppError } from '@shared/errors/AppErrors';
 import { deleteFile } from '@utils/file';
-import { inject, injectable } from 'tsyringe';
+import { IStorageProvider } from '@shared/container/providers/StorageProvider/IStorageProvider';
 
 interface IRequest {
   car_id: string;
@@ -16,7 +17,10 @@ class UploadCarImagesUseCase {
     private carsRepository: ICarsRepository,
 
     @inject('CarsImagesRepository')
-    private carsImagesRepository: ICarsImagesRepository
+    private carsImagesRepository: ICarsImagesRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider
   ) {}
 
   async execute({ car_id, images_name }: IRequest): Promise<void> {
@@ -29,24 +33,21 @@ class UploadCarImagesUseCase {
     /**
      * retorna um array com os dados da coluna 'images_name' da tabela 'cars_images' pertencentes
      * ao 'car_id' passado. */
-    const images_db = await this.carsImagesRepository.findById(car_id);
+      const images_db = await this.carsImagesRepository.findById(car_id);
 
-    /**
-     * apaga os arquivos do array na pasta */
-    if (images_db.length) {
-      images_db.map(async (image) => {
-        await deleteFile(`./tmp/cars/${image.image_name}`);
-      });
-    }
+    // apaga a imagem com mesmo nome no storage (local ou s3):
+    images_db.map(async (image) => {
+      await this.storageProvider.delete(image.image_name, 'cars');
+    });
 
-    /**
-     * apaga os todos os registros da tabela referentes ao 'car_id  */
+    // apaga os todos os registros da tabela referentes ao 'car_id':
     this.carsImagesRepository.delete(car.id);
 
-    /**
-     * cria novos resgistros na tabela 'cars_images' */
     images_name.map(async (image) => {
+      // cria novos registros na tabela 'cars_images':
       await this.carsImagesRepository.create(car_id, image);
+      // salva a imagem no storage (local ou s3:)
+      await this.storageProvider.save(image, 'cars');
     });
   }
 }

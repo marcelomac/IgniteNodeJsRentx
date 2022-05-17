@@ -6,7 +6,6 @@ import { IStorageProvider } from '../IStorageProvider';
 class LocalStorageProvider implements IStorageProvider {
   async save(file: string, folder: string): Promise<string> {
     
-    console.log('entrou ??');
     // fs.promises.rename(oldPath, newPath)
     // remove da primeira pasta (oldPath) e move para a segunda (newPath):
     await fs.promises.rename(

@@ -4,7 +4,7 @@ import { resolve } from 'path';
 
 const tmpFolder = resolve(__dirname, '..', '..', 'tmp');
 
-// exporta um objeto com as options do multer:
+// exporta um OBJETO com as OPTIONS do multer:
 export default {
   tmpFolder,
 

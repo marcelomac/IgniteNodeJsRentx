@@ -9,6 +9,7 @@ import '@shared/container';
 import { router } from './routes';
 import swaggerFile from '../../../swagger.json';
 import { AppError } from '@shared/errors/AppErrors';
+import upload from '@config/upload';
 
 require('dotenv/config');
 
@@ -18,6 +19,15 @@ const app = express();
 
 app.use(express.json());
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
+
+/**
+ * AULA (FINAL): https://app.rocketseat.com.br/node/chapter-vi-2/group/configuracao-aws/lesson/criando-url-de-acesso-do-avatar
+ * Cria uma 'rota estática'. Ex: localhost:3333/avatar/avatar1.jpg
+ */
+
+app.use('/avatar', express.static(`${upload.tmpFolder}/avatar`));
+app.use('/cars', express.static(`${upload.tmpFolder}/cars`));
+
 app.use(router);
 
 /** Em middlewares de erro, o parâmetro "Error" precisa ser o primeiro.
