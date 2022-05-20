@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import swaggerUI from 'swagger-ui-express';
-
 import createConnection from '@shared/infra/typeorm';
 
 import '@shared/container';
