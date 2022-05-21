@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: "., !node_modules"
+          source: "~/*.*, !node_modules"
           target: "test"
           timeout: 2m
           
