@@ -15,11 +15,11 @@ class SESMailProvider implements IMailProvider {
 
   constructor() {
     this.client = nodemailer.createTransport({
-      SES: new  SES({
-        apiVersion: "2010-12-01",
+      SES: new SES({
+        apiVersion: '2010-12-01',
         region: process.env.AWS_REGION,
-      })
-    })
+      }),
+    });
   }
 
   async sendMail(
@@ -34,7 +34,7 @@ class SESMailProvider implements IMailProvider {
 
     await this.client.sendMail({
       to,
-      from: 'Rentx <meuemail@meudominio.com.br>',
+      from: 'Rentx <rentx@marcelomac.com>',
       subject,
       html: templateHTML,
     });
