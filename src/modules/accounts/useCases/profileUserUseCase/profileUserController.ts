@@ -6,7 +6,9 @@ import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepositor
 class ProfileUserController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    
+
+    console.log('user: ', id);
+
     const profileUserUseCase = container.resolve(ProfileUserUseCase);
 
     const user = await profileUserUseCase.execute(id);
