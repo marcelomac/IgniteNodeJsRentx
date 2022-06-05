@@ -20,6 +20,7 @@ class SESMailProvider implements IMailProvider {
         region: process.env.AWS_REGION,
       }),
     });
+    console.log('region: ', process.env.AWS_REGION);
   }
 
   async sendMail(
@@ -33,8 +34,8 @@ class SESMailProvider implements IMailProvider {
     const templateHTML = templateParse(variables);
 
     await this.client.sendMail({
-      to,
       from: 'Rentx <rentx@marcelomac.com>',
+      to,
       subject,
       html: templateHTML,
     });
