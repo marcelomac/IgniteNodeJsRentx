@@ -14,8 +14,10 @@ const redisClient = redis.createClient({
  * points: número de requisições (10)
  * duration: tempo (1 seg)
  * exemplo:  10 requisições / segundo
- * teste2
+ * teste3
  */
+
+// await redisClient.connect();
 
 const limiter = new RateLimiterRedis({
   storeClient: redisClient,
