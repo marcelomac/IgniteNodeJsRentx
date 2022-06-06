@@ -5,8 +5,11 @@ import redis from 'redis';
 import { AppError } from '@shared/errors/AppErrors';
 
 const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: Number(process.env.REDIS_PORT),
+  legacyMode: true,
+  socket: {
+    host: process.env.REDIS_HOST,
+    port: Number(process.env.REDIS_PORT),
+  },
 });
 
 /**
