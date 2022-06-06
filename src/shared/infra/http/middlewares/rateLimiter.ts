@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
-import redis from 'redis';
+import { createClient }  from 'redis';
 
 import { AppError } from '@shared/errors/AppErrors';
 
-const redisClient = redis.createClient({
+const redisClient = createClient({
   legacyMode: true,
   socket: {
     host: process.env.REDIS_HOST,
