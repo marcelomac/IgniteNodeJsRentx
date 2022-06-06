@@ -3,9 +3,7 @@ node_modules
 tmp/*
 coverage
 .env
-.env.full
 !tmp/.gitkeep
 dist
 ormconfig.json
 docker-compose.yml
-docker-compose.full.yml
