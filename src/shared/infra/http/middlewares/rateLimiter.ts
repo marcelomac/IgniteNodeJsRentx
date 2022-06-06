@@ -1,16 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
-import { createClient }  from 'redis';
+import { createClient } from 'redis';
 
 import { AppError } from '@shared/errors/AppErrors';
-
-const redisClient = createClient({
-  legacyMode: true,
-  socket: {
-    host: process.env.REDIS_HOST,
-    port: Number(process.env.REDIS_PORT),
-  },
-});
 
 /**
  * keyPrefix: mesmo nome do middleware ("rateLimiter")
@@ -20,20 +12,28 @@ const redisClient = createClient({
  * teste4
  */
 
-// await redisClient.connect();
-
-const limiter = new RateLimiterRedis({
-  storeClient: redisClient,
-  keyPrefix: 'rateLimiter',
-  points: 5, // 10 requests
-  duration: 5, // per 1 second by IP
-});
-
 export default async function rateLimiter(
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<void> {
+  const redisClient = createClient({
+    legacyMode: true,
+    socket: {
+      host: process.env.REDIS_HOST,
+      port: Number(process.env.REDIS_PORT),
+    },
+  });
+
+  await redisClient.connect();
+
+  const limiter = new RateLimiterRedis({
+    storeClient: redisClient,
+    keyPrefix: 'rateLimiter',
+    points: 5, // 10 requests
+    duration: 2, // per 1 second by IP
+  });
+
   try {
     await limiter.consume(request.ip);
 
