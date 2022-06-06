@@ -14,7 +14,7 @@ const redisClient = redis.createClient({
  * points: número de requisições (10)
  * duration: tempo (1 seg)
  * exemplo:  10 requisições / segundo
- * teste3
+ * teste4
  */
 
 // await redisClient.connect();
