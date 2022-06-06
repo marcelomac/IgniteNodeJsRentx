@@ -11,12 +11,15 @@ import { router } from './routes';
 import swaggerFile from '../../../swagger.json';
 import { AppError } from '@shared/errors/AppErrors';
 import upload from '@config/upload';
+import rateLimiter from '@shared/infra/http/middlewares/rateLimiter';
 
 require('dotenv/config');
 
 createConnection();
-
 const app = express();
+
+// importar o rateLimiter antes das rotas
+app.use(rateLimiter);
 
 app.use(express.json());
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));

@@ -20,7 +20,6 @@ class SESMailProvider implements IMailProvider {
         region: process.env.AWS_REGION,
       }),
     });
-    console.log('region: ', process.env.AWS_REGION);
   }
 
   async sendMail(
