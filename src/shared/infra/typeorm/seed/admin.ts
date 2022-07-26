@@ -12,7 +12,8 @@ import createConnection from '../index';
 //import createConnection from '@shared/infra/typeorm';
 
 async function create() {
-  const connection = await createConnection('localhost');
+  //const connection = await createConnection('localhost');
+  const connection = await createConnection();
   const id = uuidv4();
   const password = await hash('admin', 8);
 
